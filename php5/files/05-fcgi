@@ -1,0 +1,7 @@
+<Ifmodule mod_fcgid.c>
+      # Context - server config
+      FcgidMaxProcesses 200
+      # Otherwise php output shall be buffered
+      FcgidOutputBufferSize 0
+</IfModule>
+

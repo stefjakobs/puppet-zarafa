@@ -1,0 +1,53 @@
+# this file is managed by puppet
+
+Origin: Ubuntu
+Label: Zarafa
+Suite: Lucid
+Codename: 10.04
+Version: 3.0
+Architectures: i386 amd64 source
+Components: main non-free contrib
+Description: current zarafa
+#Update: debian non-US security
+<% if scope.lookupvar('reprepro::gpg_sign_key') -%>
+SignWith: <%= scope.lookupvar('reprepro::gpg_sign_key') %>
+<% end %>
+
+Origin: Production
+Label: Zarafa Production
+Suite: Precise
+Codename: 12.04-production
+Version: 3.0
+Architectures: i386 amd64 source
+Components: main non-free contrib
+Description: current zarafa (production)
+#Update: debian non-US security
+<% if scope.lookupvar('reprepro::gpg_sign_key') -%>
+SignWith: <%= scope.lookupvar('reprepro::gpg_sign_key') %>
+<% end %>
+
+Origin: Staging
+Label: Zarafa Staging
+Suite: 
+Codename: 12.04-staging
+Version: 3.0
+Architectures: i386 amd64 source
+Components: main non-free contrib
+Description: current zarafa (staging)
+#Update: debian non-US security
+<% if scope.lookupvar('reprepro::gpg_sign_key') -%>
+SignWith: <%= scope.lookupvar('reprepro::gpg_sign_key') %>
+<% end %>
+
+Origin: Testing
+Label: Zarafa Testing
+Suite: 
+Codename: 12.04-testing
+Version: 3.0
+Architectures: i386 amd64 source
+Components: main non-free contrib
+Description: current zarafa (testing)
+#Update: debian non-US security
+<% if scope.lookupvar('reprepro::gpg_sign_key') -%>
+SignWith: <%= scope.lookupvar('reprepro::gpg_sign_key') %>
+<% end %>

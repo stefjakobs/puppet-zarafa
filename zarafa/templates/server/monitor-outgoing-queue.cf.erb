@@ -1,0 +1,14 @@
+# THIS FILE IS MANAGED BY PUPPET
+
+# zarafa-monitor-outgoing-queue configuration file
+# format:
+#    variable => value,
+
+# host the mysql daemon run on
+DB_HOST      => 'localhost',
+# database name
+DB_NAME      => '<%= scope.lookupvar('zarafa::params::mysql_database') %>',
+# mysql user
+DB_USER      => '<%= scope.lookupvar('zarafa::params::mysql_zarafa_user') %>',
+# users password
+DB_PASS      => '<%= scope.lookupvar('zarafa::params::mysql_zarafa_password') %>',

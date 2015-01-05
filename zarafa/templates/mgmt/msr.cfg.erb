@@ -1,0 +1,9 @@
+[Connection]
+serverpath: <%= scope.lookupvar('zarafa::params::server_socket') %> 
+sslkey_file: <%= scope.lookupvar('zarafa::params::ssl_key_file_client') %>
+sslkey_pass: <%= scope.lookupvar('zarafa::params::ssl_key_pass_client') %>
+
+[Mapping]
+ts000001: https://node2:237/zarafa
+ts000002: https://node2:237/zarafa
+

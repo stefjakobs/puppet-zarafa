@@ -1,0 +1,4 @@
+## THIS FILE IS MANAGED BY PUPPET ##
+
+# trigger full synchonise for users and groups from the external source
+04 07    * * *     zarafa     /usr/bin/zarafa-admin --sync > /var/tmp/zarafa-trigger-sync.done

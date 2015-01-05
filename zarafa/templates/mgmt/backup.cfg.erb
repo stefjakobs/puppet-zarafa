@@ -1,0 +1,17 @@
+## This file is managed by Puppet
+
+# Server unix socket location
+server_socket	= <%= scope.lookupvar('zarafa::params::server_socket') %>
+
+# Login to the Zarafa server using this SSL Key
+sslkey_file = <%= scope.lookupvar('zarafa::params::ssl_key_file_client') %>
+
+# The password of the SSL Key
+sslkey_pass = <%= scope.lookupvar('zarafa::params::ssl_key_pass_client') %>
+
+# Only backup stores from these servers. Leave blank for any server.
+# Only used when backing up all users, or a full company.
+backup_servers = 
+
+# Use multiple threads when backing up multiple stores.
+#threads = 1

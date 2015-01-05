@@ -1,0 +1,4 @@
+# THIS FILE IS MANAGED BY PUPPET
+
+# start zarafa backup via mysql dump
+10  8    * * *     root     /usr/sbin/zarafa-dump-backup.sh > /var/tmp/zarafa-dump-backup.done

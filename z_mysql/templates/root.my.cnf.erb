@@ -1,0 +1,7 @@
+[mysqladmin]
+password=<%= scope.lookupvar('z_mysql::params::mysql_root_password') %>
+user=root
+
+[client]
+password=<%= scope.lookupvar('z_mysql::params::mysql_root_password') %>
+

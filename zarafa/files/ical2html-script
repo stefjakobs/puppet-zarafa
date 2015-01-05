@@ -1,0 +1,4 @@
+#!/bin/bash
+T=$(/bin/tempfile)
+/usr/bin/wget -q --user myuser --password mypassword --output-document=$T http://myserver:myport/caldav/myuser
+/usr/local/bin/ical2html -z "Europe/Berlin" -f "Reservierung via Outlookeinladung an: myuser<br>Letzte Aktualisierung:$(date)" $(date +'%Y%m01') P455D $T > /var/www/seminarraum/index.html

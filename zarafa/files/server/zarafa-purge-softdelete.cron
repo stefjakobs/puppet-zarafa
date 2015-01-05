@@ -1,0 +1,4 @@
+## THIS FILE IS MANAGED BY PUPPET ##
+
+# Clean up Softdelete cache 
+10 02    * * *     zarafa     /usr/bin/zarafa-admin --purge-softdelete 30 > /var/tmp/zarafa-purge-softdelete.done

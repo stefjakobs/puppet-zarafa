@@ -1,0 +1,28 @@
+#################################################################################
+## This is Z-push only
+##################################################################################
+
+# Z-Push - ActiveSync over-the-air
+Alias /Microsoft-Server-ActiveSync /var/www/z-push/index.php
+
+<Directory /var/www/z-push>
+    # Don't list a directory index, follow symlinks (maybe state dir is somewhere linked)
+    Options -Indexes +FollowSymLinks
+
+    # Z-push requirement for use with fcgid
+    RewriteEngine On
+    RewriteRule .* - [E=HTTP_MS_ASPROTOCOLVERSION:%{HTTP:Ms-Asprotocolversion}]
+    RewriteRule .* - [E=HTTP_X_MS_POLICYKEY:%{HTTP:X-Ms-Policykey}]
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+
+    # Security
+    # Don't allow .htaccess Overrides, disallow access to files
+    AllowOverride none
+
+    <Files "debug.txt">
+        Deny from All
+    </Files>
+    <Files "config.php">
+        Deny from All
+    </Files>
+</Directory>

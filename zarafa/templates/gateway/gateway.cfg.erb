@@ -1,0 +1,112 @@
+## This file is managed by Puppet
+
+##############################################################
+# GATEWAY SETTINGS
+
+server_bind              = <%= @server_bind %>
+
+# Please refer to the administrator manual or manpage why HTTP is used rather than the UNIX socket.
+server_socket	          = <%= @server_socket %>
+
+# Set this value to a name to show in the logon greeting to clients.
+# Leave empty to use DNS to find this name.
+server_hostname          = <%= @server_hostname %>
+
+# Whether to show the hostname in the logon greeting to clients.
+<% if @server_hostname -%>
+server_hostname_greeting = yes
+<% else -%>
+server_hostname_greeting = no
+<% end -%>
+
+# drop privileges and run the process as this user
+run_as_user              = <%= scope.lookupvar('zarafa::params::zarafa_user') %>
+
+# drop privileges and run the process as this group
+run_as_group             = <%= scope.lookupvar('zarafa::params::zarafa_group') %>
+
+# create a pid file for stopping the service via the init.d scripts
+pid_file                 = /var/run/zarafa-gateway.pid
+
+# run server in this path (when not using the -F switch)
+running_path             = /
+
+# create memory coredumps upon crash in the running_path directory
+coredump_enabled         = <%= @coredump_enabled %>
+
+# enable/disable POP3, and POP3 listen port
+pop3_enable              = <%= @pop3_enable %> 
+pop3_port                = <%= @pop3_port %> 
+
+# enable/disable Secure POP3, and Secure POP3 listen port
+pop3s_enable             = <%= @pop3s_enable %>
+pop3s_port               = <%= @pop3s_port %>
+
+# enable/disable IMAP, and IMAP listen port
+imap_enable              = <%= @imap_enable %>
+imap_port                = <%= @imap_port %>
+
+# enable/disable Secure IMAP, and Secure IMAP listen port
+imaps_enable             = <%= @imaps_enable %>
+imaps_port               = <%= @imaps_port %>
+
+# Only mail folder for IMAP or all subfolders (calendar, contacts, tasks, etc. too)
+imap_only_mailfolders    = <%= @imap_only_mailfolders %>
+
+# Show Public folders for IMAP
+imap_public_folders      = <%= @imap_public_folders %>
+
+# IMAP clients may use IDLE command
+imap_capability_idle     = <%= @imap_capability_idle %>
+
+# The maximum size of an email that can be uploaded to the gateway
+imap_max_messagesize     = <%= @imap_max_messagesize %>
+
+# Override the e-mail charset and generate using utf-8 (when imap data is not present on the item)
+imap_generate_utf8       = no
+
+# Internally issue the expunge command to directly delete e-mail marked for deletion in IMAP.
+imap_expunge_on_delete   = no
+
+# Store full rfc822 message during APPEND
+imap_store_rfc822        = yes
+
+# Maximum count of allowed failed IMAP command counts per client
+imap_max_fail_commands   = 10
+
+# Disable all plaintext authentications unless SSL/TLS is used
+disable_plaintext_auth   = no
+
+# File with RSA key for SSL
+ssl_private_key_file     = <%= scope.lookupvar('zarafa::params::ssl_dir') %>/<%= scope.lookupvar('zarafa::params::ssl_gateway_priv_key') %>
+
+#File with certificate for SSL
+ssl_certificate_file     = <%= scope.lookupvar('zarafa::params::ssl_dir') %>/<%= scope.lookupvar('zarafa::params::ssl_gateway_cert') %>
+
+# Verify client certificate
+ssl_verify_client        = no
+
+# Client verify file and/or path
+ssl_verify_file          =
+ssl_verify_path          = /etc/ssl/certs/
+
+# Accept SSLv2 only incoming connections
+ssl_enable_v2            = no
+
+# Process model, using pthreads (thread) or processes (fork)
+process_model            = thread
+
+##############################################################
+# GATEWAY LOG SETTINGS
+
+# Logging method (syslog, file)
+log_method               = syslog
+
+# Loglevel (0=no logging, 5=full logging)
+log_level                = <%= scope.lookupvar('zarafa::params::log_level') %>
+
+# Logfile for log_method = file, use '-' for stderr
+log_file                 = /var/log/zarafa/gateway.log
+
+# Log timestamp - prefix each log line with timestamp in 'file' logging mode
+log_timestamp            = 1

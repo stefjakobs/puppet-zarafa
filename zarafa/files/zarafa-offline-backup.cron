@@ -1,0 +1,4 @@
+## THIS FILE IS MANAGED BY PUPPET ##
+
+# Do zarafa-offline-backup for all nodes
+05 22    * * *     zarafa-backup        /home/zarafa-backup/bin/zarafa-offline-backup.sh

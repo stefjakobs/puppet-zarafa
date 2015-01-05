@@ -1,0 +1,4 @@
+# THIS FILE IS MANAGED BY PUPPET
+
+# cleanup zarafa-dagent senddb
+17  07    * * *     zarafa    find <%= autorespond_senddb %> -atime +<%= autorespond_timelimit_days %> -name zarafa-vacation-\*.db -delete

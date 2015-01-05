@@ -1,0 +1,6 @@
+## This file is managed by puppet
+
+# admin.cfg
+server_socket = https://<%= @fqdn %>:237/zarafa
+sslkey_file   = <%= scope.lookupvar('zarafa::params::ssl_key_file_client') %> 
+sslkey_pass   = <%= scope.lookupvar('zarafa::params::ssl_key_pass_client') %>

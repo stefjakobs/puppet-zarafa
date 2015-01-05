@@ -1,0 +1,114 @@
+## THIS FILE IS MANAGED BY PUPPET ##
+
+/var/log/zarafa/archiver.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+}
+
+/var/log/zarafa/dagent.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}
+
+/var/log/zarafa/gateway.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}
+
+/var/log/zarafa/ical.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}
+
+/var/log/zarafa/search.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}
+
+/var/log/zarafa/licensed.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}
+
+/var/log/zarafa/monitor.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}
+
+/var/log/zarafa/server.log /var/log/zarafa/audit.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}
+
+/var/log/zarafa/spooler.log {
+        daily
+        missingok
+        rotate 8
+        compress
+        delaycompress
+        notifempty
+        sharedscripts
+        postrotate
+                invoke-rc.d syslog-ng reload > /dev/null
+        endscript
+}

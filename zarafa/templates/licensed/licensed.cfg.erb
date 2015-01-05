@@ -1,0 +1,48 @@
+## This File is managed by Puppet
+
+##############################################################
+# SERVER SETTINGS
+
+# The socket that the license server will run on
+# default: /var/run/zarafa-licensed
+server_pipe_name = /var/run/zarafa-licensed
+
+# The URL on which we can contact zarafa-server
+# default: file:///var/run/zarafa
+server_socket = file:///var/run/zarafa-prio
+
+# Login to the Zarafa server using this SSL Key
+sslkey_file         = <%= scope.lookupvar('zarafa::params::ssl_key_file_client') %>
+
+# The password of the SSL Key
+sslkey_pass         = <%= scope.lookupvar('zarafa::params::ssl_key_pass_client') %>
+
+# License path (should contain 'base' and CALs in other files)
+license_path		= /etc/zarafa/license
+
+# drop privileges and run the process as this user
+run_as_user		= <%= scope.lookupvar('zarafa::params::zarafa_user') %> 
+
+# drop privileges and run the process as this group
+run_as_group		= <%= scope.lookupvar('zarafa::params::zarafa_group') %>
+
+# create a pid file for stopping the service via the init.d scripts
+pid_file		= /var/run/zarafa-licensed.pid
+
+# run server in this path (when not using the -F switch)
+running_path = /
+
+##############################################################
+# LOG SETTINGS
+
+# Logging method (syslog, file)
+log_method		= syslog 
+
+# Logfile (for log_method = file, '-' for stderr)
+log_file		= /var/log/zarafa/licensed.log
+
+# Loglevel (0=no logging, 5=full logging)
+log_level		= <%= scope.lookupvar('zarafa::params::log_level') %>
+
+# Log timestamp - prefix each log line with timestamp in 'file' logging mode
+log_timestamp		= 1

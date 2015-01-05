@@ -1,0 +1,52 @@
+#
+# Zarafa <%= component %> upstart script
+#
+description "Zarafa <%= component %>"
+author "Sören Berger"
+
+start on (net-device-up
+          and local-filesystems
+          and runlevel [2345]
+<% if @required -%>
+          and started <%= required %>
+<% end -%>
+          )
+
+stop on runlevel [016]
+
+kill timeout 90
+
+<% if @is_server -%>
+
+# This is taken from the original init script.
+pre-stop script
+  if [ -f /tmp/zarafa-upgrade-lock ]; then
+    echo
+    echo "Zarafa database upgrade is taking place."
+    echo "Do not stop this process because it may render your database unusable."
+    echo
+    exit 1
+  fi
+end script
+<% end -%>
+
+script
+  # Just get the locales and globals from there NOT the configuration
+  . /etc/default/zarafa
+  if [ "$<%= component.upcase %>_ENABLED" = "no" ]; then
+    echo "zarafa-<%= component %> is disabled by configuration"
+    exit 1
+  fi
+<% if @is_server %>
+  if [ ! -S /var/run/mysqld/mysqld.sock ]; then
+    echo "MySQL socket is not here"
+    exit 1
+  fi
+<% end %>
+  export LC_ALL=$ZARAFA_LOCALE
+  export LANG=$ZARAFA_LOCALE
+<% if @component == 'gateway' -%>
+  export LD_PRELOAD="/usr/lib/libtcmalloc_minimal.so.0"
+<% end -%>
+  exec /usr/bin/zarafa-<%= component %> <%= parameters %> -c /etc/zarafa/<%= component %>.cfg
+end script

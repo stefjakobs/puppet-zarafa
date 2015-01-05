@@ -1,0 +1,30 @@
+## This file is managed by Puppet
+
+## Global SSL configuration
+<IfModule mod_ssl.c>
+   SSLProtocol all -SSLv2
+   SSLHonorCipherOrder on
+   SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM \
+      EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 \
+      EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 \
+      !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS"
+
+<%# we use variables from the scope apache2::config -%>
+<% if @service_cert and @service_cert != '' -%> 
+   SSLCertificateFile <%= @keypath %>/<%= @service_cert %>-cert.pem
+   SSLCertificateKeyFile <%= @keypath %>/<%= @service_cert %>.pem
+<% end -%>
+   SSLCACertificatePath /etc/ssl/certs
+
+   # Server Certificate Chain:
+   # Point SSLCertificateChainFile at a file containing the
+   # concatenation of PEM encoded CA certificates which form the
+   # certificate chain for the server certificate. Alternatively
+   # the referenced file can be the same as SSLCertificateFile
+   # when the CA certificates are directly appended to the server
+   # certificate for convinience.
+<% if @ca_chain_file and @ca_chain_file != '' -%>
+   SSLCertificateChainFile  <%= @keypath %>/<%= @ca_chain_file %>
+<% end -%>
+</IfModule>
+

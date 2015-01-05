@@ -1,0 +1,62 @@
+<VirtualHost *:<%= @port %>>
+
+      ServerName <%= @servername %>
+<% if @serveraliases.is_a? Array -%>
+<% @serveraliases.each do |name| -%>
+      <%= "ServerAlias #{name}" %>
+<% end -%>
+<% elsif @serveraliases != '' -%>
+      <%= "ServerAlias #{serveraliases}" %>
+<% end -%>
+<% if @serveradmin != '' -%>
+      <%= "ServerAdmin #{serveradmin}" %>
+<% end -%>
+
+      # Optimization
+      HostnameLookups  Off
+      UseCanonicalName Off
+      ServerSignature  Off
+
+<% if @ssl -%>
+      SSLEngine on
+      SSLProtocol all -SSLv2 -SSLv3
+<% end -%>
+
+      Header add Set-Cookie "ROUTEID=.%{BALANCER_WORKER_ROUTE}e; path=/" env=BALANCER_ROUTE_CHANGED
+      <Proxy balancer://cluster>
+<% i = 1 -%>
+<% @proxylist.each do |proxy| -%>
+            BalancerMember <%= "http://#{proxy}" -%> route=<%= i -%> retry=0 timeout=3600
+<% i += 1 -%>
+<% end -%>
+      </Proxy>
+
+      # Balancer Manager
+      <Location /balancer-manager>
+            SetHandler balancer-manager
+            Order Deny,Allow
+            Deny from all
+            # Lorenz
+            Allow from 129.69.58.33
+            Allow From 2001:7c0:201e:3a::33/64
+            # NKS
+            Allow from 129.69.11.0/26
+            Allow from 2001:7c0:7c0:111::/64
+      </Location>
+
+      ProxyPassMatch    ^/balancer-manager      !
+      ProxyPass         / balancer://cluster/ stickysession=ROUTEID
+      ProxyPassReverse  / balancer://cluster/ stickysession=ROUTEID
+
+      #ErrorLog ${APACHE_LOG_DIR}/<%= name %>_error.log
+      ErrorLog syslog:<%= scope.lookupvar('apache2::params::apache2_log_facility') %>
+
+      # Possible values include: debug, info, notice, warn, error, crit,
+      # alert, emerg.
+      LogLevel <%= scope.lookupvar('apache2::params::apache2_log_level') %>
+
+      #CustomLog ${APACHE_LOG_DIR}/<%= name %>_access.log combined
+      CustomLog "|logger -t <%= scope.lookupvar('apache2::params::apache2_log_tag_ssl') -%> -p <%= scope.lookupvar('apache2::params::apache2_log_facility') -%>.<%= scope.lookupvar('apache2::params::apache2_log_priority') -%>"  combined
+
+</VirtualHost>
+

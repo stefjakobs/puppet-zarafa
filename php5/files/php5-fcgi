@@ -1,0 +1,17 @@
+#################################################################################
+# This is required for PHP as FCGI process
+#################################################################################
+
+<IfModule mod_fastcgi.c>
+    AddHandler php5-fcgi .php
+    Action php5-fcgi /php5-fcgi
+    Alias /php5-fcgi /usr/lib/cgi-bin/php5-fcgi
+    FastCgiExternalServer /usr/lib/cgi-bin/php5-fcgi -socket /var/run/php5-fpm.sock -pass-header Authorization
+</IfModule>
+<Ifmodule mod_fcgid.c>
+        # FCGID registers a handler named fcgid-script
+        AddHandler fcgid-script .php
+        Options +ExecCGI
+        FcgidWrapper /usr/local/bin/php-fcgid-wrapper
+</IfModule>
+

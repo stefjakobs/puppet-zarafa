@@ -1,0 +1,40 @@
+<% if @ipaddress6 and @ipaddress6 != '' -%>
+<VirtualHost <%= @ipaddress %>:<%= @port %> [<%= @ipaddress6 %>]:<%= @port %>>
+<% else -%>
+<VirtualHost <%= @ipaddress %>:<%= @port %>>
+<% end -%>
+
+      ServerName <%= @servername %>
+<% if @serveraliases.is_a? Array -%>
+<% @serveraliases.each do |name| -%>
+      <%= "ServerAlias #{name}" %>
+<% end -%>
+<% elsif @serveraliases != '' -%>
+      <%= "ServerAlias #{serveraliases}" %>
+<% end -%>
+<% if @serveradmin != '' -%>
+      <%= "ServerAdmin #{serveradmin}" %>
+<% end -%>
+
+<% if @docroot != '' -%>
+      DocumentRoot <%= @docroot %>
+      <Directory <%= @docroot %>>
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride None
+            Order allow,deny
+            allow from all
+      </Directory>
+<% end -%>
+
+      #ErrorLog ${APACHE_LOG_DIR}/<%= @name %>_error.log
+      ErrorLog syslog:<%= scope.lookupvar('apache2::params::apache2_log_facility') %>
+
+      # Possible values include: debug, info, notice, warn, error, crit,
+      # alert, emerg.
+      LogLevel <%= scope.lookupvar('apache2::params::apache2_log_level') %>
+
+      #CustomLog ${APACHE_LOG_DIR}/<%= @name %>_access.log combined
+      CustomLog "|logger -t <%= scope.lookupvar('apache2::params::apache2_log_tag_no_ssl') -%> -p <%= scope.lookupvar('apache2::params::apache2_log_facility') -%>.<%= scope.lookupvar('apache2::params::apache2_log_priority') -%>"  combined
+
+</VirtualHost>
+

@@ -1,0 +1,49 @@
+<VirtualHost *:<%= @port %>>
+      # Optimization
+      # HostnameLookups  Off
+      # ServerSignature  Off
+
+      ServerName <%= servername %>
+<% if serveraliases.is_a? Array -%>
+<% serveraliases.each do |name| -%>
+      <%= "ServerAlias #{name}" %>
+<% end -%>
+<% elsif serveraliases != '' -%>
+      <%= "ServerAlias #{serveraliases}" %>
+<% end -%>
+
+<% if ssl == true -%>
+      SSLProxyEngine On
+      SSLEngine On
+      SSLVerifyDepth 2
+      SSLProtocol -ALL +SSLv3 +TLSv1
+      SSLCipherSuite ALL:!aNULL:!SSLv2:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM
+
+<% end -%>
+      Header add zarafa_proxy "yes"
+      RequestHeader set zarafa_proxy "yes"
+
+      #ErrorLog ${APACHE_LOG_DIR}/<%= name %>_error.log
+      ErrorLog syslog:<%= scope.lookupvar('apache2::params::apache2_log_facility') %>
+
+      # Possible values include: debug, info, notice, warn, error, crit,
+      # alert, emerg.
+      LogLevel <%= scope.lookupvar('apache2::params::apache2_log_level') %>
+
+      #CustomLog ${APACHE_LOG_DIR}/<%= name %>_access.log combined
+      CustomLog "|logger -t <%= scope.lookupvar('apache2::params::apache2_log_tag_socket') -%> -p <%= scope.lookupvar('apache2::params::apache2_log_facility') -%>.<%= scope.lookupvar('apache2::params::apache2_log_priority') -%>"  combined
+<% i = 1 -%>
+<% proxylist.each do |proxy| -%>
+<% if i == 1 -%>
+      <%= "ProxyPass /zarafa https://#{proxy}:237/zarafa retry=0" %>
+      <%= "ProxyPassReverse /zarafa https://#{proxy}:237/zarafa" %>
+
+<% else -%>
+      <%= "ProxyPass /#{proxy.split('.').first}" -%><%= " https://#{proxy}:237" -%><%= "/#{proxy.split('.').first}" -%><% " retry=0" %>
+      <%= "ProxyPassReverse /#{proxy.split('.').first}" -%><%= " https://#{proxy}:237" -%><%= "/#{proxy.split('.').first}" %>
+
+<% end -%>
+<% i += 1 -%>
+<% end -%>
+</VirtualHost>
+

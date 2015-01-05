@@ -1,0 +1,6 @@
+# Enable ActiveSync (Z-Push)
+RewriteEngine On
+RewriteRule .* - [E=HTTP_MS_ASPROTOCOLVERSION:%{HTTP:Ms-Asprotocolversion}]
+RewriteRule .* - [E=HTTP_X_MS_POLICYKEY:%{HTTP:X-Ms-Policykey}]
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+
